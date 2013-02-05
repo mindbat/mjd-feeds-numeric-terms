@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Add custom treatment of numeric terms for feeds. 
+ *
+ * Add functions and configuration to force feeds to treat incoming
+ * numeric taxonomy terms as term names instead of term ids. 
+ */
+
+/**
+ * @TODO: Add admin config form for selecting which content types and fields get overridden
+ */
+
+/**
+ * Import numeric term name correctly
+ */
+function feeds_numeric_terms_get_correct_numeric_term($term_name, $vocab_name, $parent_tid = null) {
+  // check if the term already exists
+  $term = taxonomy_get_term_by_name($term_name, $vocab_name);
+
+  // if not, create it
+  if (empty($term)) {
+    $term = new stdClass();
+    $term->name = $term_name;
+    $vocab = taxonomy_vocabulary_machine_name_load($vocab_name);
+    $term->vid = $vocab->vid;
+    $term->vocabulary_machine_name = $vocab_name;
+
+    if (!empty($parent_tid)) {
+      $term->parent = $parent_tid;
+    }
+
+    taxonomy_term_save($term);
+  }
+
+  // ensure we return an object, not an array
+  if (is_array($term)) {
+    $term = array_pop($term);
+  }
+
+  return $term;
+}

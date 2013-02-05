@@ -1,0 +1,9 @@
+name = Feeds Numeric Terms 
+description = Custom treatment of numeric terms for feeds 
+package = MJD
+core = 7.x
+version = "7.x-0.1"
+dependencies[] = feeds
+dependencies[] = feeds_ui
+dependencies[] = feeds_import
+files[] = feeds_numeric_terms.module 
